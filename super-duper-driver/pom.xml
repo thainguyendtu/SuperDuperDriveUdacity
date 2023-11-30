@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.udacity.jwdnd.course1</groupId>
-	<artifactId>superduperdrive</artifactId>
+	<artifactId>super-duper-driver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>superduperdrive</name>
-	<description>Super Duper Drive UDa</description>
+	<name>super-duper-driver</name>
+	<description>Super Duper Driver Udacity</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
