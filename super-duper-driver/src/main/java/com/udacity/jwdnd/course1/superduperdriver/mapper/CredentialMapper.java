@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.superduperdriver.model.mapper;
+package com.udacity.jwdnd.course1.superduperdriver.mapper;
 
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.Credential;
 import org.apache.ibatis.annotations.Insert;

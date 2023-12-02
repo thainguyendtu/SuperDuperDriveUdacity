@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.superduperdriver.util;
 
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.User;
-import com.udacity.jwdnd.course1.superduperdriver.model.mapper.UserMapper;
+import com.udacity.jwdnd.course1.superduperdriver.mapper.UserMapper;
 import com.udacity.jwdnd.course1.superduperdriver.service.EncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

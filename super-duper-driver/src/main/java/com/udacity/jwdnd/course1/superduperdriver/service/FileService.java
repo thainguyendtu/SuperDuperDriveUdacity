@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.superduperdriver.service;
 
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.File;
-import com.udacity.jwdnd.course1.superduperdriver.model.mapper.FileMapper;
+import com.udacity.jwdnd.course1.superduperdriver.mapper.FileMapper;
 import com.udacity.jwdnd.course1.superduperdriver.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
