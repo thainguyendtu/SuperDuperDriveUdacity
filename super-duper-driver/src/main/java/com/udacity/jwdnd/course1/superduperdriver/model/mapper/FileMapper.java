@@ -1,6 +1,6 @@
 package com.udacity.jwdnd.course1.superduperdriver.model.mapper;
 
-import com.udacity.jwdnd.course1.superduperdriver.model.entities.FileEntity;
+import com.udacity.jwdnd.course1.superduperdriver.model.entities.File;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -13,14 +13,17 @@ import java.util.List;
 public interface FileMapper {
 
     @Select("SELECT * FROM FILES WHERE delFlag = 0")
-    List<FileEntity> getAllFiles();
+    List<File> getAllFiles();
 
     @Select("SELECT * FROM FILES WHERE id = #{id} AND delFlag = 0")
-    FileEntity getFileDetail(int id);
+    File getFileDetail(int id);
+
+    @Select("SELECT * FROM FILES WHERE fileName = #{fileName} AND userId = #{userId} AND delFlag = 0")
+    File checkExistFileName(String fileName, int userId);
 
     @Insert("INSERT INTO FILES (fileName, contentType, size, data, delFlag, userId) VALUES(#{fileName}, #{contentType}, #{size}, #{data}, #{delFlag}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insert(FileEntity fileEntity);
+    int insert(File file);
 
     @Update("UPDATE FILES SET delFlag = 1 WHERE id = #{id}")
     int delete(int id);

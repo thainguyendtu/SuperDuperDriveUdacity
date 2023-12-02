@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.superduperdriver.service;
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.Credential;
 import com.udacity.jwdnd.course1.superduperdriver.model.mapper.CredentialMapper;
 import com.udacity.jwdnd.course1.superduperdriver.util.ProjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -12,8 +13,11 @@ import java.util.Objects;
 @Service
 public class CredentialService {
 
-    private final CredentialMapper credentialMapper;
-    private final ProjectUtils projectUtils;
+    @Autowired
+    CredentialMapper credentialMapper;
+
+    @Autowired
+    ProjectUtils projectUtils;
 
     public CredentialService(CredentialMapper credentialMapper, final ProjectUtils projectUtils) {
         this.credentialMapper = credentialMapper;

@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.superduperdriver.util;
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.User;
 import com.udacity.jwdnd.course1.superduperdriver.model.mapper.UserMapper;
 import com.udacity.jwdnd.course1.superduperdriver.service.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,8 +15,11 @@ import java.util.Base64;
 @Component
 public class ProjectUtils {
 
-    private final UserMapper userMapper;
-    private final EncryptionService encryptionService;
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    EncryptionService encryptionService;
 
     public ProjectUtils(final UserMapper userMapper, final EncryptionService encryptionService) {
         this.userMapper = userMapper;

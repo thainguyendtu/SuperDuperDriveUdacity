@@ -2,10 +2,12 @@ package com.udacity.jwdnd.course1.superduperdriver.service;
 
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.User;
 import com.udacity.jwdnd.course1.superduperdriver.model.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,17 +15,15 @@ import java.util.ArrayList;
 @Service
 public class AuthenticationService implements AuthenticationProvider {
 
-    private UserMapper userMapper;
+    @Autowired
+    UserMapper userMapper;
 
-    private HashService hashService;
-
-    public AuthenticationService(UserMapper userMapper, HashService hashService) {
-        this.userMapper = userMapper;
-        this.hashService = hashService;
-    }
+    @Autowired
+    HashService hashService;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+            throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
@@ -42,5 +42,17 @@ public class AuthenticationService implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
+
+    public Integer getUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            String username = authentication.getName();
+            User user = userMapper.getUser(username);
+            if (user != null) {
+                return user.getId();
+            }
+        }
+        return null;
     }
 }

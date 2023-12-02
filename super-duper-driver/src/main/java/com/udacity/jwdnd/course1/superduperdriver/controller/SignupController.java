@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.superduperdriver.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.entities.User;
-import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import com.udacity.jwdnd.course1.superduperdriver.model.entities.User;
+import com.udacity.jwdnd.course1.superduperdriver.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

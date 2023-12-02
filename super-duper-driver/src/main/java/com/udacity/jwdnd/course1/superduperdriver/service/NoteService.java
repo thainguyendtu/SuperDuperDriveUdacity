@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.superduperdriver.service;
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.Note;
 import com.udacity.jwdnd.course1.superduperdriver.model.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.superduperdriver.util.ProjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -12,13 +13,11 @@ import java.util.Objects;
 @Service
 public class NoteService {
 
-    private final NoteMapper noteMapper;
-    private final ProjectUtils projectUtils;
+    @Autowired
+    NoteMapper noteMapper;
 
-    public NoteService(NoteMapper noteMapper, final ProjectUtils projectUtils) {
-        this.noteMapper = noteMapper;
-        this.projectUtils = projectUtils;
-    }
+    @Autowired
+    ProjectUtils projectUtils;
 
     public List<Note> getAllNotes() {
         return noteMapper.getAllNotes();
