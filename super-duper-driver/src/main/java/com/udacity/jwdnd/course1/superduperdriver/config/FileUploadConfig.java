@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.superduperdriver.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +10,8 @@ import javax.servlet.MultipartConfigElement;
 @Configuration
 public class FileUploadConfig {
 
-    private final FileUploadProperties fileUploadProperties;
-
-    public FileUploadConfig(FileUploadProperties fileUploadProperties) {
-        this.fileUploadProperties = fileUploadProperties;
-    }
+    @Autowired
+    FileUploadProperties fileUploadProperties;
 
     @Bean
     public MultipartConfigElement multipartConfigElement() {
