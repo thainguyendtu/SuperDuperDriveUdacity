@@ -12,13 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -36,7 +36,9 @@ public class FileController {
     FileUploadProperties fileUploadProperties;
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("fileUpload") MultipartFile file, Model model, Principal principal) {
+    public String uploadFile(@RequestParam("fileUpload") MultipartFile file,
+                             RedirectAttributes redirectAttrs,
+                             Principal principal) {
         if (principal == null) {
             return Constants.REDIRECT_LOGIN;
         }
@@ -44,15 +46,15 @@ public class FileController {
         int userId = authenticationService.getUserId();
         long maxFileSize = convertFileSize(fileUploadProperties.getMaxFileSize());
         if (file.isEmpty()) {
-            model.addAttribute("error", "Please select a file to upload.");
+            redirectAttrs.addFlashAttribute("error", "Please select a file to upload.");
         } else if (file.getSize() > maxFileSize) {
-            model.addAttribute("error", "Please upload file under 10MB in size.");
+            redirectAttrs.addFlashAttribute("error", "Please upload file under 10MB in size.");
         } else if (fileService.checkExistFileName(file.getOriginalFilename(), userId)) {
-            model.addAttribute("error", "File name is already exists.");
+            redirectAttrs.addFlashAttribute("error", "File name is already exists.");
         } else if (fileService.addFile(file) < 1) {
-            model.addAttribute("error", "Upload file failed.");
+            redirectAttrs.addFlashAttribute("error", "Upload file failed.");
         } else {
-            model.addAttribute("message", "Upload file success.");
+            redirectAttrs.addFlashAttribute("message", "Upload file success.");
         }
 
         return Constants.REDIRECT_HOME;
@@ -65,22 +67,22 @@ public class FileController {
             return ResponseEntity.ok()
                                  .contentType(MediaType.parseMediaType(file.getContentType()))
                                  .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
-                                 .body(new ByteArrayResource(file.getData()));
+                                 .body(new ByteArrayResource(file.getFileData()));
         } catch (Exception e) {
-            throw new Exception("Error downloading file");
+            throw new Exception("Error downloading file.");
         }
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteFile(@PathVariable Integer id, Model model, Principal principal) {
+    public String deleteFile(@PathVariable Integer id, RedirectAttributes redirectAttrs, Principal principal) {
         if (principal == null) {
             return Constants.REDIRECT_LOGIN;
         }
 
         if (fileService.deleteFile(id) > 0) {
-            model.addAttribute("updateNoteSuccess", "Insert note success.");
+            redirectAttrs.addFlashAttribute("updateNoteSuccess", "Insert note success.");
         } else {
-            model.addAttribute("updateNoteFail", "Insert note failure.");
+            redirectAttrs.addFlashAttribute("updateNoteFail", "Insert note failure.");
         }
         return Constants.REDIRECT_HOME;
     }

@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.superduperdriver.mapper;
 
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.Note;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -12,19 +13,19 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    @Select("SELECT * FROM NOTES WHERE delFlag = 0")
-    List<Note> getAllNotes();
+    @Select("SELECT * FROM NOTES WHERE userId = #{userId}")
+    List<Note> getAllNotes(Integer userId);
 
-    @Select("SELECT * FROM NOTES WHERE id = #{id} AND delFlag = 0")
-    Note getNoteDetail(Integer id);
+    @Select("SELECT * FROM NOTES WHERE noteId = #{noteId} AND userId = #{userId}")
+    Note getNoteDetail(Integer noteId, Integer userId);
 
-    @Insert("INSERT INTO NOTES (title, description, delFlag, userId) VALUES(#{title}, #{description}, #{delFlag}, #{userId})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("INSERT INTO NOTES (noteTitle, noteDescription, userId) VALUES (#{noteTitle}, #{noteDescription}, #{userId})")
+    @Options(useGeneratedKeys = true, keyProperty = "noteId")
     int insert(Note note);
 
-    @Update("UPDATE NOTES SET title = #{title}, description = #{description} WHERE id = #{id}")
+    @Update("UPDATE NOTES SET noteTitle = #{noteTitle}, noteDescription = #{noteDescription} WHERE noteId = #{noteId}")
     int update(Note note);
 
-    @Update("UPDATE NOTES SET delFlag = 1 WHERE id = #{id}")
-    int delete(int id);
+    @Delete("DELETE FROM NOTES WHERE noteId = #{noteId}")
+    int delete(Integer noteId);
 }

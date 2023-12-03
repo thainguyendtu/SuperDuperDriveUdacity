@@ -11,18 +11,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Credential extends BaseEntity {
 
-    private Integer id;
+    private Integer credentialId;
     private String url;
     private String username;
-    private String keyValue;
+    private String key;
     private String password;
     private String decodedPassword;
 
-    public Credential(String url, String username, String keyValue, String password, Boolean delFlag, Integer userId) {
-        super(delFlag, userId);
+    public Credential(String url, String username, String key, String password, Integer userId) {
+        super(userId);
         this.url = url;
         this.username = username;
-        this.keyValue = keyValue;
+        this.key = key;
         this.password = password;
     }
 }

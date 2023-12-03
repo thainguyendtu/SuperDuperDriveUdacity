@@ -11,13 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Note extends BaseEntity {
 
-    private Integer id;
-    private String title;
-    private String description;
+    private Integer noteId;
+    private String noteTitle;
+    private String noteDescription;
 
-    public Note(String title, String description, Boolean delFlag, Integer userId) {
-        super(delFlag, userId);
-        this.title = title;
-        this.description = description;
+    public Note(String noteTitle, String noteDescription, Integer userId) {
+        super(userId);
+        this.noteTitle = noteTitle;
+        this.noteDescription = noteDescription;
     }
 }

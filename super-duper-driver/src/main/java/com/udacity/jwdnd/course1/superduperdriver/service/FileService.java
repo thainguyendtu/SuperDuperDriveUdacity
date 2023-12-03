@@ -18,12 +18,15 @@ public class FileService {
     @Autowired
     ProjectUtils projectUtils;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public List<File> getAllFiles() {
-        return fileMapper.getAllFiles();
+        return fileMapper.getAllFiles(authenticationService.getUserId());
     }
 
     public File getFileDetail(int id) {
-        return fileMapper.getFileDetail(id);
+        return fileMapper.getFileDetail(id, authenticationService.getUserId());
     }
 
     public boolean checkExistFileName(String fileName, int userId) {
@@ -34,7 +37,7 @@ public class FileService {
         try {
             return fileMapper.insert(
                     new File(file.getOriginalFilename(), file.getContentType(), getFileSizeBytes(file), file.getBytes(),
-                             false, projectUtils.getCurrentUserId()));
+                             projectUtils.getCurrentUserId()));
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

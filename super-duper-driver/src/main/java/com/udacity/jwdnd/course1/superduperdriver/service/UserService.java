@@ -6,6 +6,8 @@ import com.udacity.jwdnd.course1.superduperdriver.util.ProjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UserService {
 
@@ -15,18 +17,16 @@ public class UserService {
     @Autowired
     ProjectUtils projectUtils;
 
-    public UserService(UserMapper userMapper, ProjectUtils projectUtils) {
-        this.userMapper = userMapper;
-        this.projectUtils = projectUtils;
-    }
+    @Autowired
+    HashService hashService;
 
     public boolean isUsernameAvailable(String username) {
-        return userMapper.getUser(username) == null;
+        return Objects.isNull(userMapper.getUser(username));
     }
 
     public int createUser(User user) {
         String encodedSalt = projectUtils.getEncodedSalt();
-        String hashedPassword = projectUtils.encodePassword(user.getPassword(), encodedSalt);
+        String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
         return userMapper.insert(
                 new User(user.getUsername(), encodedSalt, hashedPassword, user.getFirstName(), user.getLastName()));
     }

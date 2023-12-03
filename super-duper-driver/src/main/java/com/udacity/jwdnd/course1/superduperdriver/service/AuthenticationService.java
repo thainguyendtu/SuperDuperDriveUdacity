@@ -22,15 +22,15 @@ public class AuthenticationService implements AuthenticationProvider {
     HashService hashService;
 
     @Override
-    public Authentication authenticate(Authentication authentication)
-            throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
         User user = userMapper.getUser(username);
-        if (user != null) {
-            String encodedSalt = user.getSalt();
-            String hashedPassword = hashService.getHashedValue(password, encodedSalt);
+
+        if (user != null){
+            String encodeSalt = user.getSalt();
+            String hashedPassword = hashService.getHashedValue(password, encodeSalt);
             if (user.getPassword().equals(hashedPassword)) {
                 return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
             }
@@ -50,9 +50,10 @@ public class AuthenticationService implements AuthenticationProvider {
             String username = authentication.getName();
             User user = userMapper.getUser(username);
             if (user != null) {
-                return user.getId();
+                return user.getUserId();
             }
         }
+
         return null;
     }
 }

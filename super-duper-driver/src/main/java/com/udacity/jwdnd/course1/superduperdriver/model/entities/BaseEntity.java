@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public abstract class BaseEntity {
 
-    private Boolean delFlag;
     private Integer userId;
 }

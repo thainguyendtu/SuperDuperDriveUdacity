@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -21,44 +22,50 @@ public class CredentialController {
     CredentialService credentialService;
 
     @PostMapping("/add")
-    public String addCredential(@ModelAttribute Credential credential, Model model, Principal principal) {
+    public String addCredential(@ModelAttribute Credential credential,
+                                RedirectAttributes redirectAttrs,
+                                Principal principal) {
         if (principal == null) {
             return Constants.REDIRECT_LOGIN;
         }
 
         if (credentialService.addCredential(credential) > 0) {
-            model.addAttribute("message", "Insert credential success.");
+            redirectAttrs.addFlashAttribute("message", "Insert credential success.");
         } else {
-            model.addAttribute("error", "Insert credential failed.");
+            redirectAttrs.addFlashAttribute("error", "Insert credential failed.");
         }
 
         return Constants.REDIRECT_HOME;
     }
 
     @PostMapping("/update")
-    public String updateCredential(@ModelAttribute Credential credential, Model model, Principal principal) {
+    public String updateCredential(@ModelAttribute Credential credential,
+                                   RedirectAttributes redirectAttrs,
+                                   Principal principal) {
         if (principal == null) {
             return Constants.REDIRECT_LOGIN;
         }
 
         if (credentialService.updateCredential(credential) > 0) {
-            model.addAttribute("message", "Update credential success.");
+            redirectAttrs.addFlashAttribute("message", "Update credential success.");
         } else {
-            model.addAttribute("error", "Update credential failed.");
+            redirectAttrs.addFlashAttribute("error", "Update credential failed.");
         }
         return Constants.REDIRECT_HOME;
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteCredential(@PathVariable Integer id, Model model, Principal principal) {
+    public String deleteCredential(@PathVariable Integer id,
+                                   RedirectAttributes redirectAttrs,
+                                   Principal principal) {
         if (principal == null) {
             return Constants.REDIRECT_LOGIN;
         }
 
         if (credentialService.deleteNote(id) > 0) {
-            model.addAttribute("message", "Delete credential success.");
+            redirectAttrs.addFlashAttribute("message", "Delete credential success.");
         } else {
-            model.addAttribute("error", "Delete note failed.");
+            redirectAttrs.addFlashAttribute("error", "Delete note failed.");
         }
 
         return Constants.REDIRECT_HOME;

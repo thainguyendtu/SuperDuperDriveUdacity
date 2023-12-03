@@ -1,30 +1,30 @@
 package com.udacity.jwdnd.course1.superduperdriver.mapper;
 
 import com.udacity.jwdnd.course1.superduperdriver.model.entities.File;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
 @Mapper
 public interface FileMapper {
 
-    @Select("SELECT * FROM FILES WHERE delFlag = 0")
-    List<File> getAllFiles();
+    @Select("SELECT * FROM FILES WHERE userId = #{userId}")
+    List<File> getAllFiles(Integer userId);
 
-    @Select("SELECT * FROM FILES WHERE id = #{id} AND delFlag = 0")
-    File getFileDetail(int id);
+    @Select("SELECT * FROM FILES WHERE fileId = #{fileId} AND userId = #{userId}")
+    File getFileDetail(Integer fileId, Integer userId);
 
-    @Select("SELECT * FROM FILES WHERE fileName = #{fileName} AND userId = #{userId} AND delFlag = 0")
-    File checkExistFileName(String fileName, int userId);
+    @Select("SELECT * FROM FILES WHERE fileName = #{fileName} AND userId = #{userId}")
+    File checkExistFileName(String fileName, Integer userId);
 
-    @Insert("INSERT INTO FILES (fileName, contentType, size, data, delFlag, userId) VALUES(#{fileName}, #{contentType}, #{size}, #{data}, #{delFlag}, #{userId})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("INSERT INTO FILES (fileName, contentType, fileSize, fileData, userId) VALUES (#{fileName}, #{contentType}, #{fileSize}, #{fileData}, #{userId})")
+    @Options(useGeneratedKeys = true, keyProperty = "fileId")
     int insert(File file);
 
-    @Update("UPDATE FILES SET delFlag = 1 WHERE id = #{id}")
-    int delete(int id);
+    @Delete("DELETE FROM FILES WHERE fileId = #{fileId}")
+    int delete(Integer id);
 }

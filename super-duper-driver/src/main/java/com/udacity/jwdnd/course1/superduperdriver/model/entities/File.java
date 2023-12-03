@@ -11,17 +11,17 @@ import lombok.Setter;
 @AllArgsConstructor
 public class File extends BaseEntity {
 
-    private Integer id;
+    private Integer fileId;
     private String fileName;
     private String contentType;
-    private String size;
-    private byte[] data;
+    private String fileSize;
+    private byte[] fileData;
 
-    public File(String fileName, String contentType, String size, byte[] data, Boolean delFlag, Integer userId) {
-        super(delFlag, userId);
+    public File(String fileName, String contentType, String fileSize, byte[] fileData, Integer userId) {
+        super(userId);
         this.fileName = fileName;
         this.contentType = contentType;
-        this.size = size;
-        this.data = data;
+        this.fileSize = fileSize;
+        this.fileData = fileData;
     }
 }

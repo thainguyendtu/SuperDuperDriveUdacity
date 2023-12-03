@@ -21,11 +21,6 @@ public class ProjectUtils {
     @Autowired
     EncryptionService encryptionService;
 
-    public ProjectUtils(final UserMapper userMapper, final EncryptionService encryptionService) {
-        this.userMapper = userMapper;
-        this.encryptionService = encryptionService;
-    }
-
     public Integer getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -34,7 +29,7 @@ public class ProjectUtils {
         }
 
         User currentUser = userMapper.getUser(auth.getName());
-        return currentUser.getId();
+        return currentUser.getUserId();
     }
 
     public String getEncodedSalt() {

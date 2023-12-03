@@ -19,16 +19,14 @@ public class CredentialService {
     @Autowired
     ProjectUtils projectUtils;
 
-    public CredentialService(CredentialMapper credentialMapper, final ProjectUtils projectUtils) {
-        this.credentialMapper = credentialMapper;
-        this.projectUtils = projectUtils;
-    }
+    @Autowired
+    AuthenticationService authenticationService;
 
     public List<Credential> getAllCredential() {
-        List<Credential> credentialsList = credentialMapper.getAllCredentials();
+        List<Credential> credentialsList = credentialMapper.getAllCredentials(authenticationService.getUserId());
         for(Credential credential : credentialsList) {
             credential.setDecodedPassword(
-                    projectUtils.decodePassword(credential.getPassword(), credential.getKeyValue()));
+                    projectUtils.decodePassword(credential.getPassword(), credential.getKey()));
         }
         return credentialsList;
     }
@@ -37,12 +35,14 @@ public class CredentialService {
         String encodedSalt = projectUtils.getEncodedSalt();
         String password = projectUtils.encodePassword(credential.getPassword(), encodedSalt);
 
-        return credentialMapper.insert(new Credential(credential.getUrl(), credential.getUsername(), encodedSalt,
-                                                      password, false, projectUtils.getCurrentUserId()));
+        return credentialMapper.insert(
+                new Credential(credential.getUrl(), credential.getUsername(), encodedSalt,
+                               password, projectUtils.getCurrentUserId()));
     }
 
     public int updateCredential(Credential credential) {
-        Credential currentData = credentialMapper.getCredentialDetail(credential.getId());
+        Credential currentData =
+                credentialMapper.getCredentialDetail(credential.getCredentialId(), authenticationService.getUserId());
 
         if (Objects.isNull(currentData)) {
             return 0;
@@ -58,11 +58,11 @@ public class CredentialService {
         }
 
         if (StringUtils.hasText(credential.getPassword())) {
-            String currentPassword = projectUtils.decodePassword(currentData.getPassword(), currentData.getKeyValue());
+            String currentPassword = projectUtils.decodePassword(currentData.getPassword(), currentData.getKey());
 
             if (!currentPassword.equals(credential.getPassword())) {
                 currentData.setPassword(
-                        projectUtils.encodePassword(credential.getPassword(), currentData.getKeyValue()));
+                        projectUtils.encodePassword(credential.getPassword(), currentData.getKey()));
             }
         }
 

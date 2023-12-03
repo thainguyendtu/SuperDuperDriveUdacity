@@ -19,27 +19,30 @@ public class NoteService {
     @Autowired
     ProjectUtils projectUtils;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public List<Note> getAllNotes() {
-        return noteMapper.getAllNotes();
+        return noteMapper.getAllNotes(authenticationService.getUserId());
     }
 
     public int addNote(Note note) {
-        return noteMapper.insert(new Note(note.getTitle(), note.getDescription(), false, projectUtils.getCurrentUserId()));
+        return noteMapper.insert(new Note(note.getNoteTitle(), note.getNoteDescription(), projectUtils.getCurrentUserId()));
     }
 
     public int updateNote(Note note) {
-        Note currentData = noteMapper.getNoteDetail(note.getId());
+        Note currentData = noteMapper.getNoteDetail(note.getNoteId(), authenticationService.getUserId());
 
         if (Objects.isNull(currentData)) {
             return 0;
         }
 
-        if (StringUtils.hasText(note.getTitle()) && !note.getTitle().equals(currentData.getTitle())) {
-            currentData.setTitle(note.getTitle());
+        if (StringUtils.hasText(note.getNoteTitle()) && !note.getNoteTitle().equals(currentData.getNoteTitle())) {
+            currentData.setNoteTitle(note.getNoteTitle());
         }
 
-        if (StringUtils.hasText(note.getDescription()) && !note.getDescription().equals(currentData.getDescription())) {
-            currentData.setDescription(note.getDescription());
+        if (StringUtils.hasText(note.getNoteDescription()) && !note.getNoteDescription().equals(currentData.getNoteDescription())) {
+            currentData.setNoteDescription(note.getNoteDescription());
         }
 
         return noteMapper.update(currentData);
